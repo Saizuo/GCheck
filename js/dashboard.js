@@ -787,3 +787,45 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('scroll', animateMetrics);
     }
 });
+
+// Add this to your existing dashboard.js file
+
+// Improve mobile tab navigation
+function setupMobileTabNavigation() {
+    const tabs = document.querySelectorAll('.tab');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Scroll the tab into view on mobile
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    this.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                }, 100);
+            }
+        });
+    });
+}
+
+// Call this function after the dashboard is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    setupMobileTabNavigation();
+    
+    // Also handle window resize events
+    window.addEventListener('resize', function() {
+        if (window.innerWidth <= 768) {
+            // Ensure active tab is visible
+            const activeTab = document.querySelector('.tab.active');
+            if (activeTab) {
+                activeTab.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            }
+        }
+    });
+});

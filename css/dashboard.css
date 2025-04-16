@@ -1083,3 +1083,214 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+/* Mobile-specific fixes for dashboard */
+@media (max-width: 768px) {
+    /* General layout fixes */
+    .dashboard-main {
+        padding-top: 100px;
+    }
+    
+    .container {
+        width: 95%;
+    }
+    
+    /* Search box fixes */
+    .search-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-box input {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    .search-icon {
+        display: none;
+    }
+    
+    .analyze-btn {
+        width: 100%;
+        margin-top: 10px;
+        justify-content: center;
+    }
+    
+    /* Dashboard header fixes */
+    .dashboard-header {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .repo-info {
+        width: 100%;
+    }
+    
+    .repo-score {
+        align-self: center;
+    }
+    
+    /* Dashboard tabs fixes */
+    .dashboard-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 5px;
+    }
+    
+    .tab {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+    
+    /* Dashboard grid fixes */
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-card.wide {
+        grid-column: 1;
+    }
+    
+    /* Security breakdown fixes */
+    .security-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .security-label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .security-bar {
+        width: 100%;
+    }
+    
+    .security-value {
+        width: 100%;
+        text-align: left;
+        margin-top: 5px;
+    }
+    
+    /* Vulnerability item fixes */
+    .vulnerability-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .vulnerability-severity {
+        align-self: flex-start;
+    }
+    
+    /* Timeline fixes */
+    .timeline-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .timeline-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+    
+    .timeline-content::before {
+        display: none;
+    }
+    
+    /* Contributors grid fixes */
+    .contributors-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Loading state fixes */
+    .loading-steps {
+        max-width: 100%;
+    }
+    
+    .step-label {
+        font-size: 14px;
+    }
+    
+    /* Chart fixes */
+    .chart-bars {
+        height: 150px;
+    }
+    
+    .chart-labels {
+        font-size: 10px;
+    }
+    
+    /* Language distribution fixes */
+    .language-labels {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Recommendation items */
+    .recommendation-header {
+        flex-wrap: wrap;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .dashboard-main {
+        padding-top: 90px;
+    }
+    
+    .repo-details h3 {
+        font-size: 16px;
+    }
+    
+    .repo-meta {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .dashboard-tabs {
+        padding: 0;
+    }
+    
+    .tab {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .dashboard-content {
+        padding: 15px 10px;
+    }
+    
+    .dashboard-card {
+        padding: 15px;
+    }
+    
+    .dashboard-card h4 {
+        font-size: 14px;
+    }
+    
+    .score-circle {
+        width: 50px;
+        height: 50px;
+    }
+    
+    /* Fix for loading spinner */
+    .loading-spinner {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .loading-text {
+        font-size: 16px;
+    }
+    
+    /* Fix for error message */
+    .error-icon {
+        font-size: 36px;
+    }
+    
+    .error-container h3 {
+        font-size: 18px;
+    }
+}
