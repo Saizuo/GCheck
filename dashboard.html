@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCheck - Repository Analysis Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-code-branch"></i></div>
+                <h1>GCheck<span class="blink">_</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#">Docs</a></li>
+                    <li><a href="#" class="nav-button">Try Now</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="dashboard-search">
+                <div class="search-container">
+                    <div class="search-box">
+                        <div class="search-icon">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <input type="text" id="repo-url" placeholder="github.com/user/repo">
+                        <button class="analyze-btn" id="analyze-btn">Analyze <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="search-examples">
+                        Try: <a href="#" onclick="document.getElementById('repo-url').value='tensorflow/tensorflow'; return false;">tensorflow/tensorflow</a>, 
+                        <a href="#" onclick="document.getElementById('repo-url').value='facebook/react'; return false;">facebook/react</a>, 
+                        <a href="#" onclick="document.getElementById('repo-url').value='microsoft/vscode'; return false;">microsoft/vscode</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loading" class="loading-container" style="display: none;">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Analyzing Repository</div>
+                <div class="loading-subtext">Scanning <span id="loading-repo-url">user/repo</span></div>
+                
+                <div class="loading-steps">
+                    <div class="loading-step">
+                        <div class="step-status active">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <div class="step-label">Fetching repository data...</div>
+                    </div>
+                    <div class="loading-step">
+                        <div class="step-status pending">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                        <div class="step-label">Analyzing commit history...</div>
+                    </div>
+                    <div class="loading-step">
+                        <div class="step-status pending">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                        <div class="step-label">Checking dependencies...</div>
+                    </div>
+                    <div class="loading-step">
+                        <div class="step-status pending">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                        <div class="step-label">Evaluating security posture...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Error Message -->
+            <div id="error-message" class="error-container" style="display: none;">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <h3>Repository Not Found</h3>
+                <p>We couldn't find the repository you're looking for. Please check the URL and try again.</p>
+                <a href="#" class="retry-button" onclick="window.location.reload()">Try Again</a>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div id="dashboard" style="display: none;">
+                <div class="dashboard-frame">
+                    <div class="dashboard-header">
+                        <div class="repo-info">
+                            <div class="repo-icon"><i class="fab fa-github"></i></div>
+                            <div class="repo-details">
+                                <h3 id="repo-name">user/repo</h3>
+                                <div class="repo-meta">
+                                    <span><i class="fas fa-star"></i> <span id="repo-stars">0</span></span>
+                                    <span><i class="fas fa-code-branch"></i> <span id="repo-forks">0</span></span>
+                                    <span><i class="fas fa-eye"></i> <span id="repo-watchers">0</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="repo-score">
+                            <div class="score-circle">
+                                <svg viewBox="0 0 36 36">
+                                    <defs>
+                                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="var(--accent-primary)" />
+                                            <stop offset="100%" stop-color="var(--accent-tertiary)" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path class="circle-bg"
+                                        d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <path class="circle"
+                                        stroke="url(#gradient)"
+                                        stroke-dasharray="85, 100"
+                                        d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <text x="18" y="20.35" class="percentage" id="health-score">85</text>
+                                </svg>
+                            </div>
+                            <span>Health Score</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-tabs">
+                        <div class="tab active" data-tab="overview">Overview</div>
+                        <div class="tab" data-tab="security">Security</div>
+                        <div class="tab" data-tab="activity">Activity</div>
+                        <div class="tab" data-tab="dependencies">Dependencies</div>
+                        <div class="tab" data-tab="contributors">Contributors</div>
+                    </div>
+                    <div class="tab-content active" id="overview-tab">
+                        <div class="dashboard-grid">
+                            <div class="dashboard-card wide">
+                                <h4>Commit Activity</h4>
+                                <div class="activity-chart">
+                                    <div class="chart-bars" id="commit-activity">
+                                        <!-- Bars will be added dynamically -->
+                                    </div>
+                                    <div class="chart-labels">
+                                        <span>Jan</span>
+                                        <span>Feb</span>
+                                        <span>Mar</span>
+                                        <span>Apr</span>
+                                        <span>May</span>
+                                        <span>Jun</span>
+                                        <span>Jul</span>
+                                        <span>Aug</span>
+                                        <span>Sep</span>
+                                        <span>Oct</span>
+                                        <span>Nov</span>
+                                        <span>Dec</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <h4>Security Issues</h4>
+                                <div class="issues-summary" id="security-issues">
+                                    <!-- Security issues will be added dynamically -->
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <h4>Top Contributors</h4>
+                                <div class="contributors-list" id="top-contributors">
+                                    <!-- Contributors will be added dynamically -->
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <h4>Language Distribution</h4>
+                                <div class="language-chart" id="language-distribution">
+                                    <!-- Language distribution will be added dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="security-tab">
+                        <div class="dashboard-grid">
+                            <div class="dashboard-card">
+                                <h4>Security Breakdown</h4>
+                                <div id="security-breakdown">
+                                    <!-- Security breakdown will be added dynamically -->
+                                </div>
+                            </div>
+                            <div class="dashboard-card">
+                                <h4>Security Recommendations</h4>
+                                <div class="recommendations-list" id="security-recommendations">
+                                    <!-- Recommendations will be added dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-card wide">
+                            <h4>Vulnerabilities</h4>
+                            <div class="vulnerabilities-list" id="vulnerabilities">
+                                <!-- Vulnerabilities will be added dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="activity-tab">
+                    <!-- Activity content will be added dynamically -->
+                </div>
+                <div class="tab-content" id="dependencies-tab">
+                    <!-- Dependencies content will be added dynamically -->
+                </div>
+                <div class="tab-content" id="contributors-tab">
+                    <!-- Contributors content will be added dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-logo">
+                <div class="logo-icon"><i class="fas fa-code-branch"></i></div>
+                <h2>GCheck</h2>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Product</h3>
+                    <ul>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">CLI Tool</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Legal</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright">
+                <p>&copy; 2025 GCheck. All rights reserved.</p>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
