@@ -1,21 +1,31 @@
 :root {
+    /* Background colors - keeping dark theme */
     --bg-primary: #050505;
     --bg-secondary: #0c0c0c;
     --bg-tertiary: #121212;
     --bg-card: #161616;
+    
+    /* Text colors - keeping for readability */
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
     --text-tertiary: rgba(255, 255, 255, 0.5);
-    --accent-primary: #4f46e5;
-    --accent-secondary: #8b5cf6;
-    --accent-tertiary: #ec4899;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
+    
+    /* Accent colors - updated for BNB */
+    --accent-primary: #F0B90B;    /* BNB primary yellow/gold */
+    --accent-secondary: #F8D33A;  /* Lighter gold */
+    --accent-tertiary: #E6A70A;   /* Darker gold */
+    
+    /* Status colors */
+    --success: #1AAE9F;           /* Teal-green */
+    --warning: #F0B90B;           /* BNB yellow as warning */
+    --danger: #D9304E;            /* Red */
+    
+    /* UI elements */
     --border: rgba(255, 255, 255, 0.1);
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-    --glow: 0 0 15px rgba(79, 70, 229, 0.5);
+    --glow: 0 0 15px rgba(240, 185, 11, 0.5); /* Updated glow to match BNB gold */
 }
+
 
 * {
     margin: 0;
